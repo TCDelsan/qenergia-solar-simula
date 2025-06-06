@@ -1,12 +1,20 @@
-
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Sun, Zap, TrendingUp, Shield, Clock, Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SimulationModal from "@/components/SimulationModal";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSimulationSuccess = (simulationId: string) => {
+    navigate('/results');
+  };
+
   const features = [
     {
       icon: Calculator,
@@ -76,14 +84,12 @@ const Index = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button 
-                asChild 
+                onClick={() => setIsModalOpen(true)}
                 size="lg" 
                 className="bg-gradient-solar hover:opacity-90 transition-all duration-300 hover:shadow-xl hover:scale-105 text-lg px-8 py-4"
               >
-                <Link to="/simulator">
-                  Simular Agora
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                Simular Agora
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               
               <Button 
@@ -92,8 +98,8 @@ const Index = () => {
                 size="lg"
                 className="border-2 hover:bg-white/50 text-lg px-8 py-4"
               >
-                <Link to="/dashboard">
-                  Ver Dashboard
+                <Link to="/simulator">
+                  Versão Completa
                 </Link>
               </Button>
             </div>
@@ -168,21 +174,26 @@ const Index = () => {
               acelerar seus resultados e impressionar seus clientes.
             </p>
             <Button 
-              asChild 
+              onClick={() => setIsModalOpen(true)}
               size="lg" 
               variant="outline"
               className="bg-white text-solar-blue hover:bg-white/90 border-2 border-white text-lg px-8 py-4"
             >
-              <Link to="/simulator">
-                Iniciar Simulação Gratuita
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              Iniciar Simulação Gratuita
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>
       </section>
 
       <Footer />
+
+      {/* Simulation Modal */}
+      <SimulationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={handleSimulationSuccess}
+      />
     </div>
   );
 };

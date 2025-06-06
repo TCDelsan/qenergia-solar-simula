@@ -9,7 +9,96 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+          role?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      simulations: {
+        Row: {
+          annual_savings: number
+          client_city: string
+          client_name: string
+          created_at: string
+          current_monthly_cost: number
+          id: string
+          monthly_consumption: number
+          new_monthly_cost: number
+          payback_time: number
+          proposal_number: string
+          required_generation: number
+          roof_type: string
+          selected_kit_id: number
+          selected_kit_name: string
+          selected_kit_power: number
+          selected_kit_price: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          annual_savings: number
+          client_city: string
+          client_name: string
+          created_at?: string
+          current_monthly_cost: number
+          id?: string
+          monthly_consumption: number
+          new_monthly_cost: number
+          payback_time: number
+          proposal_number: string
+          required_generation: number
+          roof_type: string
+          selected_kit_id: number
+          selected_kit_name: string
+          selected_kit_power: number
+          selected_kit_price: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          annual_savings?: number
+          client_city?: string
+          client_name?: string
+          created_at?: string
+          current_monthly_cost?: number
+          id?: string
+          monthly_consumption?: number
+          new_monthly_cost?: number
+          payback_time?: number
+          proposal_number?: string
+          required_generation?: number
+          roof_type?: string
+          selected_kit_id?: number
+          selected_kit_name?: string
+          selected_kit_power?: number
+          selected_kit_price?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
