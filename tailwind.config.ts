@@ -63,17 +63,17 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Cores específicas do sistema fotovoltaico
-				solar: {
-					'blue': '#1e40af',
-					'dark-blue': '#1e3a8a',
-					'light-blue': '#3b82f6',
-					'teal': '#14b8a6',
-					'light-teal': '#5eead4',
-					'green': '#059669',
-					'light-green': '#34d399',
-					'orange': '#f59e0b',
-					'yellow': '#eab308'
+				// Cores específicas da Qenergia
+				qenergia: {
+					'blue': '#005a92',
+					'dark-blue': '#003d63',
+					'light-blue': '#1e3a8a',
+					'green': '#4db560',
+					'dark-green': '#3da050',
+					'light-green': '#5cc170',
+					'whatsapp': '#25D366',
+					'gray-light': '#f8fafc',
+					'gray-medium': '#64748b'
 				}
 			},
 			borderRadius: {
@@ -119,9 +119,9 @@ export default {
 				'scale-in': 'scale-in 0.4s ease-out'
 			},
 			backgroundImage: {
-				'gradient-solar': 'linear-gradient(135deg, #1e40af 0%, #14b8a6 100%)',
-				'gradient-teal': 'linear-gradient(135deg, #14b8a6 0%, #059669 100%)',
-				'gradient-blue': 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)'
+				'gradient-qenergia': 'linear-gradient(135deg, #005a92 0%, #4db560 100%)',
+				'gradient-green': 'linear-gradient(135deg, #4db560 0%, #3da050 100%)',
+				'gradient-blue': 'linear-gradient(135deg, #005a92 0%, #003d63 100%)'
 			}
 		}
 	},

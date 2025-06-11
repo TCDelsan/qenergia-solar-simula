@@ -17,7 +17,7 @@
     --popover: 255 255 255;
     --popover-foreground: 15 23 42;
 
-    --primary: 30 64 175;
+    --primary: 0 90 146;
     --primary-foreground: 248 250 252;
 
     --secondary: 148 163 184;
@@ -26,7 +26,7 @@
     --muted: 241 245 249;
     --muted-foreground: 100 116 139;
 
-    --accent: 20 184 166;
+    --accent: 77 181 96;
     --accent-foreground: 255 255 255;
 
     --destructive: 239 68 68;
@@ -34,18 +34,18 @@
 
     --border: 226 232 240;
     --input: 226 232 240;
-    --ring: 30 64 175;
+    --ring: 0 90 146;
 
     --radius: 0.75rem;
 
     --sidebar-background: 255 255 255;
     --sidebar-foreground: 15 23 42;
-    --sidebar-primary: 30 64 175;
+    --sidebar-primary: 0 90 146;
     --sidebar-primary-foreground: 248 250 252;
     --sidebar-accent: 241 245 249;
     --sidebar-accent-foreground: 15 23 42;
     --sidebar-border: 226 232 240;
-    --sidebar-ring: 30 64 175;
+    --sidebar-ring: 0 90 146;
   }
 
   .dark {
@@ -58,7 +58,7 @@
     --popover: 30 41 59;
     --popover-foreground: 248 250 252;
 
-    --primary: 59 130 246;
+    --primary: 77 181 96;
     --primary-foreground: 15 23 42;
 
     --secondary: 51 65 85;
@@ -67,7 +67,7 @@
     --muted: 51 65 85;
     --muted-foreground: 148 163 184;
 
-    --accent: 20 184 166;
+    --accent: 77 181 96;
     --accent-foreground: 15 23 42;
 
     --destructive: 239 68 68;
@@ -75,16 +75,16 @@
 
     --border: 51 65 85;
     --input: 51 65 85;
-    --ring: 59 130 246;
+    --ring: 77 181 96;
 
     --sidebar-background: 30 41 59;
     --sidebar-foreground: 248 250 252;
-    --sidebar-primary: 59 130 246;
+    --sidebar-primary: 77 181 96;
     --sidebar-primary-foreground: 15 23 42;
     --sidebar-accent: 51 65 85;
     --sidebar-accent-foreground: 248 250 252;
     --sidebar-border: 51 65 85;
-    --sidebar-ring: 59 130 246;
+    --sidebar-ring: 77 181 96;
   }
 }
 
@@ -108,10 +108,10 @@
   }
   
   .gradient-text {
-    @apply bg-gradient-to-r from-solar-blue to-solar-teal bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-qenergia-blue to-qenergia-green bg-clip-text text-transparent;
   }
   
-  .solar-card {
+  .qenergia-card {
     @apply bg-white/95 backdrop-blur-sm border border-white/20 shadow-xl rounded-2xl;
   }
   

@@ -44,8 +44,8 @@ const Simulator = () => {
       return;
     }
 
-    if (formData.monthlyConsumption < 100 || formData.monthlyConsumption > 50000) {
-      toast.error("O consumo mensal deve estar entre 100 e 50.000 kWh");
+    if (formData.monthlyConsumption < 75 || formData.monthlyConsumption > 37500) {
+      toast.error("O valor da conta deve estar entre R$ 75 e R$ 37.500");
       return;
     }
 
@@ -55,17 +55,19 @@ const Simulator = () => {
       // Simula processamento
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      const requiredGeneration = calculateRequiredGeneration(formData.monthlyConsumption);
+      // Converter valor da conta para kWh aproximado (R$ 0,75 por kWh)
+      const monthlyConsumptionKwh = Math.round(formData.monthlyConsumption / 0.75);
+      const requiredGeneration = calculateRequiredGeneration(monthlyConsumptionKwh);
       const selectedKit = selectBestKit(requiredGeneration);
 
       if (!selectedKit) {
-        toast.error("Consumo muito alto para nossos kits padrão. Entraremos em contato para uma proposta personalizada.");
+        toast.error("Valor muito alto para nossos kits padrão. Entraremos em contato para uma proposta personalizada.");
         setIsLoading(false);
         return;
       }
 
       const { currentMonthlyCost, newMonthlyCost, annualSavings } = calculateSavings(
-        formData.monthlyConsumption, 
+        monthlyConsumptionKwh, 
         selectedKit.estimatedProduction
       );
 
@@ -80,11 +82,15 @@ const Simulator = () => {
         currentMonthlyCost,
         newMonthlyCost,
         proposalNumber,
-        simulationDate: new Date().toLocaleDateString('pt-BR')
+        simulationDate: new Date().toLocaleDateString('pt-BR'),
+        monthlyBillValue: formData.monthlyConsumption
       };
 
       // Salva no localStorage para a página de resultados
-      localStorage.setItem('simulationData', JSON.stringify(formData));
+      localStorage.setItem('simulationData', JSON.stringify({
+        ...formData,
+        monthlyBillValue: formData.monthlyConsumption
+      }));
       localStorage.setItem('simulationResult', JSON.stringify(result));
 
       toast.success("Simulação concluída com sucesso!");
@@ -102,29 +108,29 @@ const Simulator = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-qenergia-gray-light via-blue-50 to-green-50">
       <Header />
       
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="bg-gradient-solar p-3 rounded-xl w-fit mx-auto mb-4">
+            <div className="bg-gradient-qenergia p-3 rounded-xl w-fit mx-auto mb-4">
               <Calculator className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-slate-800 mb-4">
+            <h1 className="text-4xl font-bold text-qenergia-blue mb-4">
               Simulador Fotovoltaico
             </h1>
-            <p className="text-lg text-slate-600">
+            <p className="text-lg text-qenergia-gray-medium">
               Preencha os dados abaixo e descubra a solução solar ideal para você
             </p>
           </div>
 
           {/* Form */}
-          <Card className="solar-card border-0 shadow-xl">
+          <Card className="qenergia-card border-0 shadow-xl">
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl gradient-text">Dados do Projeto</CardTitle>
-              <CardDescription className="text-base">
+              <CardDescription className="text-base text-qenergia-gray-medium">
                 Todas as informações são utilizadas apenas para cálculos de viabilidade
               </CardDescription>
             </CardHeader>
@@ -133,7 +139,7 @@ const Simulator = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Nome */}
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-base font-medium">
+                  <Label htmlFor="name" className="text-base font-medium text-qenergia-blue">
                     Nome Completo *
                   </Label>
                   <Input
@@ -142,14 +148,14 @@ const Simulator = () => {
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     placeholder="Digite seu nome completo"
-                    className="h-12 text-base"
+                    className="h-12 text-base border-gray-300 focus:border-qenergia-green"
                     required
                   />
                 </div>
 
                 {/* Cidade */}
                 <div className="space-y-2">
-                  <Label htmlFor="city" className="text-base font-medium">
+                  <Label htmlFor="city" className="text-base font-medium text-qenergia-blue">
                     Cidade *
                   </Label>
                   <Input
@@ -158,49 +164,50 @@ const Simulator = () => {
                     value={formData.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
                     placeholder="Digite sua cidade"
-                    className="h-12 text-base"
+                    className="h-12 text-base border-gray-300 focus:border-qenergia-green"
                     required
                   />
                 </div>
 
-                {/* Consumo */}
+                {/* Valor da Conta */}
                 <div className="space-y-2">
-                  <Label htmlFor="consumption" className="text-base font-medium">
-                    Consumo Mensal Médio (kWh) *
+                  <Label htmlFor="consumption" className="text-base font-medium text-qenergia-blue">
+                    Valor Médio da Conta de Luz (R$) *
                   </Label>
                   <Input
                     id="consumption"
                     type="number"
-                    min="100"
-                    max="50000"
+                    min="75"
+                    max="37500"
+                    step="0.01"
                     value={formData.monthlyConsumption || ""}
                     onChange={(e) => handleInputChange('monthlyConsumption', Number(e.target.value))}
-                    placeholder="Ex: 450"
-                    className="h-12 text-base"
+                    placeholder="Ex: 450.00"
+                    className="h-12 text-base border-gray-300 focus:border-qenergia-green"
                     required
                   />
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-qenergia-gray-medium">
                     Consulte sua conta de luz para encontrar este valor
                   </p>
                 </div>
 
                 {/* Tipo de Telhado */}
                 <div className="space-y-2">
-                  <Label htmlFor="roofType" className="text-base font-medium">
+                  <Label htmlFor="roofType" className="text-base font-medium text-qenergia-blue">
                     Tipo de Telhado *
                   </Label>
                   <Select 
                     value={formData.roofType} 
                     onValueChange={(value: any) => handleInputChange('roofType', value)}
                   >
-                    <SelectTrigger className="h-12 text-base">
+                    <SelectTrigger className="h-12 text-base border-gray-300 focus:border-qenergia-green">
                       <SelectValue placeholder="Selecione o tipo de telhado" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white border border-gray-200 z-50">
                       {roofTypes.map((type) => (
                         <SelectItem key={type.value} value={type.value} className="text-base">
                           <div className="flex items-center space-x-2">
-                            <type.icon className="h-4 w-4" />
+                            <type.icon className="h-4 w-4 text-qenergia-blue" />
                             <span>{type.label}</span>
                           </div>
                         </SelectItem>
@@ -212,7 +219,7 @@ const Simulator = () => {
                 {/* Submit Button */}
                 <Button 
                   type="submit" 
-                  className="w-full h-14 text-lg bg-gradient-solar hover:opacity-90 transition-all duration-300 hover:shadow-xl"
+                  className="w-full h-14 text-lg bg-gradient-qenergia hover:opacity-90 transition-all duration-300 hover:shadow-xl text-white"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -234,16 +241,16 @@ const Simulator = () => {
           {/* Info Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
             <Card className="text-center p-4 bg-white/50 border-0">
-              <div className="text-2xl font-bold text-solar-blue">+500</div>
-              <div className="text-sm text-slate-600">Projetos Simulados</div>
+              <div className="text-2xl font-bold text-qenergia-blue">+500</div>
+              <div className="text-sm text-qenergia-gray-medium">Projetos Simulados</div>
             </Card>
             <Card className="text-center p-4 bg-white/50 border-0">
-              <div className="text-2xl font-bold text-solar-teal">98%</div>
-              <div className="text-sm text-slate-600">Precisão nas Estimativas</div>
+              <div className="text-2xl font-bold text-qenergia-green">98%</div>
+              <div className="text-sm text-qenergia-gray-medium">Precisão nas Estimativas</div>
             </Card>
             <Card className="text-center p-4 bg-white/50 border-0">
-              <div className="text-2xl font-bold text-solar-green">5 anos</div>
-              <div className="text-sm text-slate-600">Payback Médio</div>
+              <div className="text-2xl font-bold text-qenergia-green">5 anos</div>
+              <div className="text-sm text-qenergia-gray-medium">Payback Médio</div>
             </Card>
           </div>
         </div>

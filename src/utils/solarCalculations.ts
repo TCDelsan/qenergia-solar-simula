@@ -70,3 +70,13 @@ export const formatCurrency = (value: number): string => {
 export const formatNumber = (value: number): string => {
   return new Intl.NumberFormat('pt-BR').format(value);
 };
+
+// Função para converter valor da conta em kWh
+export const convertBillValueToKwh = (billValue: number): number => {
+  return Math.round(billValue / KWH_PRICE);
+};
+
+// Função para converter kWh em valor da conta
+export const convertKwhToBillValue = (kwh: number): number => {
+  return kwh * KWH_PRICE;
+};
